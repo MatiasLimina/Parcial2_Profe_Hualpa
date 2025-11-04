@@ -1,7 +1,9 @@
 import os
 import csv
 
-RUTA_BASE_DATOS = "base_de_datos_alimentos"
+ruta_script = os.path.dirname(os.path.abspath(__file__))
+RUTA_BASE_DATOS = os.path.join(ruta_script, "base_de_datos_alimentos")
+
 
 def alta_nuevo_item(categoria, tipo, procesamiento, nuevo_item):
     """

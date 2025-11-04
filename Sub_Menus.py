@@ -16,15 +16,15 @@ def opcion_1_alta():
         try:
             calorias_str = input("Ingrese Calorías (por 100g): ")
             if not calorias_str:
-                 print("Error: El valor no puede estar vacío.") [cite: 66]
-                 continue
+                print("Error: El valor no puede estar vacío.")
+                continue
             calorias = float(calorias_str)
             if calorias <= 0:
                 print("Error: Las calorías deben ser un número positivo mayor a cero.") [cite: 68]
             else:
                 break
         except ValueError:
-            print("Error: Debe ingresar un valor numérico.") [cite: 67]
+            print("Error: Debe ingresar un valor numérico.") 
 
     # Crear el diccionario
     nuevo_item = {
@@ -32,6 +32,6 @@ def opcion_1_alta():
         'calorias_100g': calorias,
         # ... otros campos que definas ...
     }
-
+    
     # Llamar a tu función de Fase 2
-    alta_nuevo_item(categoria, tipo, procesamiento, nuevo_item) [cite: 62, 70]
+    alta_nuevo_item(categoria, tipo, procesamiento, nuevo_item)

@@ -30,3 +30,5 @@ def main():
             case "6":
                 print("Gracias vuelva pronto!")
                 salir = True
+
+main()

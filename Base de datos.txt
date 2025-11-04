@@ -1,0 +1,43 @@
+categoria (Nivel 1 - El más general)
+
+Este es el primer nivel de filtrado. Es el grupo más grande al que pertenece el alimento.
+
+    Ejemplos:
+
+        "Frutas"
+
+        "Verduras"
+
+        "Lácteos"
+
+        "Carnes"
+
+        "Cereales"
+
+2. tipo (Nivel 2 - Subgrupo)
+
+Este es el segundo nivel, que depende del primero. Refina la categoría.
+
+    Ejemplos:
+
+        Si categoria es "Frutas" -> tipo podría ser: "Cítricos", "Tropicales", "Frutos rojos".
+
+        Si categoria es "Carnes" -> tipo podría ser: "Aves", "Rojas", "Pescado".
+
+        Si categoria es "Lácteos" -> tipo podría ser: "Quesos", "Yogures", "Leches".
+
+3. procesamiento (Nivel 3 - El más específico)
+
+Este es tu último nivel de filtrado, que define el estado o la presentación del alimento.
+
+    Ejemplos:
+
+        "Fresco"
+
+        "Congelado"
+
+        "Enlatado"
+
+        "Deshidratado"
+
+        "En conserva"

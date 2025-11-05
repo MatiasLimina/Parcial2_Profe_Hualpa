@@ -28,57 +28,94 @@ def opcion_1_alta():
     print("\n====================================")
     print("       Alta de Nuevo Alimento       ")
     print("====================================")
-    
-    # 1. Obtener y mostrar categorías existentes para guiar al usuario.
-    lista_completa = crear_lista_desde_csv(RUTA_BASE_DATOS)
-    if lista_completa:
-        # Usamos un set para obtener categorías únicas y luego lo ordenamos.
-        categorias_existentes = sorted(list(set(item.get('categoria') for item in lista_completa if 'categoria' in item)))
-        if categorias_existentes:
-            print("\nCategorías existentes:", ", ".join(categorias_existentes))
-    
-    # Pedir jerarquía
-    categoria_input = input("Ingrese Categoría (ej: Frutas): ")
-    tipo_input = input("Ingrese Tipo (ej: Cítricos): ")
-    procesamiento_input = input("Ingrese Procesamiento (ej: Fresco): ")
 
-    # --- VALIDACIÓN DE NORMALIZACIÓN ---
-    # Llama a la nueva función (la de unicodedata)
-    categoria = normalizar_texto_para_ruta(categoria_input)
-    tipo = normalizar_texto_para_ruta(tipo_input)
-    procesamiento = normalizar_texto_para_ruta(procesamiento_input)
-    
-    # (Opcional) Informar al usuario la normalización
-    print(f"Guardando en -> Categoría: {categoria}, Tipo: {tipo}, Procesamiento: {procesamiento}")
-    
-    # Pedir atributos
-    nombre = input("Ingrese Nombre del alimento: ")
-    
-    # Validación estricta 
-    calorias = 0
+    num_items_a_agregar = 0
     while True:
         try:
-            calorias_str = input("Ingrese Calorías (por 100g): ")
-            if not calorias_str:
-                print("Error: El valor no puede estar vacío.") 
+            num_items_str = input("¿Cuántos ítems desea agregar? (Ingrese 0 para cancelar): ")
+            num_items_a_agregar = int(num_items_str)
+            if num_items_a_agregar < 0:
+                print("Error: Debe ingresar un número positivo.")
                 continue
-            calorias = float(calorias_str)
-            if calorias <= 0:
-                print("Error: Las calorías deben ser un número positivo mayor a cero.") 
-            else:
-                break
+            break # Salir del bucle si el número es válido
         except ValueError:
-            print("Error: Debe ingresar un valor numérico.") 
+            print("Error: Entrada inválida. Por favor, ingrese un número entero.")
 
-    # Crear el diccionario
-    nuevo_item = {
-        'nombre': nombre,
-        'calorias_100g': calorias,
-        # ... otros campos que definas ...
-    }
-    
-    # Llamar a tu función de Fase 2
-    alta_nuevo_item(categoria, tipo, procesamiento, nuevo_item)
+    if num_items_a_agregar == 0:
+        print("Alta de ítems cancelada.")
+        return
+
+    # Leemos la lista una sola vez al principio.
+    lista_completa_en_memoria = crear_lista_desde_csv(RUTA_BASE_DATOS)
+
+    for i in range(num_items_a_agregar):
+        print(f"\n--- Agregando Ítem {i + 1} de {num_items_a_agregar} ---")
+        
+        # 1. Obtener y mostrar categorías existentes para guiar al usuario.
+        # Ahora usamos la lista en memoria, que es más rápida.
+        if lista_completa_en_memoria:
+            # Usamos un set para obtener categorías únicas y luego lo ordenamos.
+            categorias_existentes = sorted(list(set(item.get('categoria') for item in lista_completa_en_memoria if 'categoria' in item)))
+            if categorias_existentes:
+                print("\nCategorías existentes:", ", ".join(categorias_existentes))
+        
+        # Pedir jerarquía
+        # 1. Pedir Categoría y mostrar Tipos existentes
+        categoria_input = input("Ingrese Categoría (ej: Frutas): ")
+        categoria = normalizar_texto_para_ruta(categoria_input)
+
+        if lista_completa_en_memoria:
+            items_en_categoria = [item for item in lista_completa_en_memoria if item.get('categoria') == categoria]
+            if items_en_categoria:
+                tipos_existentes = sorted(list(set(item.get('tipo') for item in items_en_categoria if 'tipo' in item)))
+                if tipos_existentes:
+                    print(f" -> Tipos existentes en '{categoria}':", ", ".join(tipos_existentes))
+
+        # 2. Pedir Tipo y mostrar Procesamientos existentes
+        tipo_input = input("Ingrese Tipo (ej: Cítricos): ")
+        tipo = normalizar_texto_para_ruta(tipo_input)
+
+        if lista_completa_en_memoria:
+            items_en_tipo = [item for item in lista_completa_en_memoria if item.get('categoria') == categoria and item.get('tipo') == tipo]
+            if items_en_tipo:
+                procesamientos_existentes = sorted(list(set(item.get('procesamiento') for item in items_en_tipo if 'procesamiento' in item)))
+                if procesamientos_existentes:
+                    print(f" -> Procesamientos existentes en '{tipo}':", ", ".join(procesamientos_existentes))
+
+        procesamiento_input = input("Ingrese Procesamiento (ej: Fresco): ")
+        procesamiento = normalizar_texto_para_ruta(procesamiento_input)
+        
+        # (Opcional) Informar al usuario la normalización
+        print(f"Guardando en -> Categoría: {categoria}, Tipo: {tipo}, Procesamiento: {procesamiento}")
+        
+        # Pedir atributos
+        nombre = input("Ingrese Nombre del alimento: ")
+        
+        # Validación estricta 
+        calorias = 0
+        while True:
+            try:
+                calorias_str = input("Ingrese Calorías (por 100g): ")
+                if not calorias_str:
+                    print("Error: El valor no puede estar vacío.") 
+                    continue
+                calorias = float(calorias_str)
+                if calorias <= 0:
+                    print("Error: Las calorías deben ser un número positivo mayor a cero.") 
+                else:
+                    break
+            except ValueError:
+                print("Error: Debe ingresar un valor numérico.") 
+
+        # Crear el diccionario
+        nuevo_item = {
+            'nombre': nombre,
+            'calorias_100g': calorias,
+            # ... otros campos que definas ...
+        }
+        
+        # Llamar a tu función de Fase 2
+        alta_nuevo_item(categoria, tipo, procesamiento, nuevo_item)
 
 def opcion_2_mostrar_y_filtrar():
     """

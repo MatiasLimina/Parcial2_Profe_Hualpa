@@ -120,7 +120,7 @@ def crear_lista_desde_csv(ruta_base, nombre_archivo="items.csv"):
 
     return lista_global_alimentos
 
-def _sobrescribir_csv(ruta_archivo: str, encabezados: list, filas: list) -> bool:
+def sobrescribir_csv(ruta_archivo: str, encabezados: list, filas: list) -> bool:
     """
     (Función auxiliar) Sobrescribe de forma segura un archivo CSV con una nueva lista de filas.
 

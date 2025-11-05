@@ -29,6 +29,14 @@ def opcion_1_alta():
     print("       Alta de Nuevo Alimento       ")
     print("====================================")
     
+    # 1. Obtener y mostrar categorías existentes para guiar al usuario.
+    lista_completa = crear_lista_desde_csv(RUTA_BASE_DATOS)
+    if lista_completa:
+        # Usamos un set para obtener categorías únicas y luego lo ordenamos.
+        categorias_existentes = sorted(list(set(item.get('categoria') for item in lista_completa if 'categoria' in item)))
+        if categorias_existentes:
+            print("\nCategorías existentes:", ", ".join(categorias_existentes))
+    
     # Pedir jerarquía
     categoria_input = input("Ingrese Categoría (ej: Frutas): ")
     tipo_input = input("Ingrese Tipo (ej: Cítricos): ")

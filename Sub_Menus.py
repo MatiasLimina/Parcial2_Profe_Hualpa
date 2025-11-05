@@ -142,6 +142,13 @@ def opcion_1_alta():
         
         # Llamar a tu función de Fase 2
         alta_nuevo_item(categoria, tipo, procesamiento, nuevo_item)
+        
+        # Actualización de datos si hay más de un alimento agregado
+        item_para_memoria = nuevo_item.copy()
+        item_para_memoria['categoria'] = categoria
+        item_para_memoria['tipo'] = tipo
+        item_para_memoria['procesamiento'] = procesamiento
+        lista_completa_en_memoria.append(item_para_memoria)
 
 def opcion_2_mostrar_y_filtrar():
     """

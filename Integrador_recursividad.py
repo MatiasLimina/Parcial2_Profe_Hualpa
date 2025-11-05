@@ -21,7 +21,11 @@ def main():
                 continue
             case "3":
                 #3) Modificacion de un item
-                continue
+                nombre = input("Ingrese el nombre exacto del ítem que desea modificar: ")
+                if nombre:
+                    modificar_item_por_nombre(nombre) # Llamada a la nueva función
+                else:
+                    print("No ingresó un nombre. Volviendo al menú.")
             case "4":
                 #4) Eliminacion de un item/Busqueda multiples coincidencias
                 nombre = input("Ingrese el nombre exacto del ítem que desea eliminar: ")

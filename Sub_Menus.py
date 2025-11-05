@@ -1,5 +1,6 @@
 from Manejo_archivo import *
 import unicodedata
+import os, csv
 from Utilidades import mostrar_tabla_alimentos, imprimir_menu
 
 def normalizar_texto_para_ruta(texto: str) -> str:
@@ -88,8 +89,33 @@ def opcion_1_alta():
         # (Opcional) Informar al usuario la normalización
         print(f"Guardando en -> Categoría: {categoria}, Tipo: {tipo}, Procesamiento: {procesamiento}")
         
+        # --- VALIDACIÓN DE EXISTENCIA ---
+        # Bucle para pedir el nombre y validar que no exista.
+        while True:
+            nombre_input = input("Ingrese Nombre del alimento: ")
+            nombre = nombre_input.strip()
+            if not nombre:
+                print("Error: El nombre no puede estar vacío.")
+                continue
+
+            ruta_archivo_especifico = os.path.join(RUTA_BASE_DATOS, categoria, tipo, procesamiento, "items.csv")
+            
+            item_existe = False
+            if os.path.exists(ruta_archivo_especifico):
+                with open(ruta_archivo_especifico, 'r', encoding='utf-8', newline='') as f:
+                    lector = csv.DictReader(f)
+                    for fila in lector:
+                        # Comparamos usando la misma normalización para ser insensibles a mayúsculas/acentos
+                        if normalizar_texto_para_ruta(fila.get('nombre', '')) == normalizar_texto_para_ruta(nombre):
+                            item_existe = True
+                            break
+            
+            if item_existe:
+                print(f"Error: El ítem '{nombre}' ya existe en esta jerarquía. Por favor, ingrese un nombre diferente.")
+            else:
+                break # El nombre es válido y no existe, salimos del bucle.
+
         # Pedir atributos
-        nombre = input("Ingrese Nombre del alimento: ")
         
         # Validación estricta 
         calorias = 0

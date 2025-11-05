@@ -1,5 +1,6 @@
 from Manejo_archivo import *
 from Sub_Menus import *
+from Utilidades import *
 def main():
     salir = False
     while not salir:
@@ -23,7 +24,11 @@ def main():
                 continue
             case "4":
                 #4) Eliminacion de un item
-                continue
+                nombre = input("Ingrese el nombre exacto del ítem que desea eliminar: ")
+                if nombre:
+                    eliminar_item_por_nombre(nombre) # Llamada a la nueva función
+                else:
+                    print("No ingresó un nombre. Volviendo al menú.")
             case "5":
                 #5) Estadisticas y ordenamiento
                 continue
